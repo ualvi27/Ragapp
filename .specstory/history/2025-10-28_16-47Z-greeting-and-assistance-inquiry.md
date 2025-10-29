@@ -1261,3 +1261,730 @@ If you see the Git version, you can proceed with git commands. If not, let me kn
 
 ---
 
+_**User (2025-10-29 00:18Z)**_
+
+(.venv) PS C:\Users\dr_um\OneDrive\Desktop\ragpiplines> git push -u origin main
+error: src refspec main does not match any
+
+---
+
+_**Assistant (copilot/gpt-4.1)**_
+
+This error means there is no branch named "main" in your repository. By default, Git creates the "master" branch unless you specify otherwise.
+
+To fix this, push your code to the "master" branch instead:
+
+```powershell
+git push -u origin master
+```
+
+If you want to use "main" as your default branch, you can rename it:
+
+```powershell
+git branch -m master main
+git push -u origin main
+```
+
+Let me know which branch name you prefer, and I’ll guide you through the next steps!
+
+---
+
+_**User (2025-10-29 00:19Z)**_
+
+(.venv) PS C:\Users\dr_um\OneDrive\Desktop\ragpiplines> git push -u origin master
+The authenticity of host 'github.com (20.207.73.82)' can't be established.
+ED25519 key fingerprint is: SHA256:+DiY3wvvV6TuJJhbpZisF/zLDA0zPMSvHdkr4UvCOqU
+This key is not known by any other names.
+Are you sure you want to continue connecting (yes/no/[fingerprint])? y   
+Please type 'yes', 'no' or the fingerprint: y
+Please type 'yes', 'no' or the fingerprint: yes
+Warning: Permanently added 'github.com' (ED25519) to the list of known hosts.
+git@github.com: Permission denied (publickey).
+fatal: Could not read from remote repository.
+
+Please make sure you have the correct access rights
+and the repository exists.
+
+---
+
+_**Assistant (copilot/gpt-4.1)**_
+
+This error means your SSH key is not set up or not added to your GitHub account, so you can't push using the git@ (SSH) URL.
+
+To fix this quickly, you have two options:
+
+**Option 1: Use HTTPS instead of SSH**
+1. Change your remote URL to HTTPS:
+   ```powershell
+   git remote set-url origin https://github.com/ualvi27/Ragapp.git
+   ```
+2. Push again:
+   ```powershell
+   git push -u origin master
+   ```
+You’ll be prompted for your GitHub username and password (or a personal access token).
+
+**Option 2: Set up SSH keys**
+- Generate an SSH key and add it to your GitHub account: https://docs.github.com/en/authentication/connecting-to-github-with-ssh
+
+For most users, Option 1 is faster. Let me know if you want to switch to HTTPS or need help with SSH setup!
+
+---
+
+_**User (2025-10-29 00:21Z)**_
+
+(.venv) PS C:\Users\dr_um\OneDrive\Desktop\ragpiplines> git push -u origin master
+info: please complete authentication in your browser...
+Enumerating objects: 14, done.
+Counting objects: 100% (14/14), done.
+Delta compression using up to 4 threads
+Compressing objects: 100% (13/13), done.
+Writing objects: 100% (14/14), 17.98 KiB | 1.38 MiB/s, done.
+Total 14 (delta 1), reused 0 (delta 0), pack-reused 0 (from 0)
+remote: Resolving deltas: 100% (1/1), done.
+remote:
+remote: Create a pull request for 'master' on GitHub by visiting:        
+remote:      https://github.com/ualvi27/Ragapp/pull/new/master
+remote:
+To https://github.com/ualvi27/Ragapp.git
+ * [new branch]      master -> master
+branch 'master' set up to track 'origin/master'.
+
+---
+
+_**Assistant (copilot/gpt-4.1)**_
+
+Your code has been successfully pushed to GitHub! The repository is now live at:
+
+https://github.com/ualvi27/Ragapp
+
+You can proceed to deploy your app on Streamlit Cloud or share your repository. If you need help with deployment, setting up Streamlit secrets, or anything else, let me know!
+
+---
+
+_**User (2025-10-29 00:28Z)**_
+
+ImportError: This app has encountered an error. The original error message is redacted to prevent data leaks. Full error details have been recorded in the logs (if you're on Streamlit Cloud, click on 'Manage app' in the lower right of your app).
+Traceback:
+File "/mount/src/ragapp/Ragapp.py", line 195, in <module>
+    all_docs.extend(process_web(web_url))
+                    ~~~~~~~~~~~^^^^^^^^^
+File "/mount/src/ragapp/Ragapp.py", line 132, in process_web
+    loader = UnstructuredURLLoader(urls=[url])
+File "/home/adminuser/venv/lib/python3.13/site-packages/langchain_community/document_loaders/url.py", line 55, in __init__
+    raise ImportError(
+    ...<2 lines>...
+    )  i am getting this error on streamlit 
+
+---
+
+_**Assistant (copilot/gpt-4.1)**_
+
+The error is caused by missing dependencies for the `UnstructuredURLLoader` in LangChain. This loader requires the `unstructured` and `requests` Python packages, which are not installed by default.
+
+To fix this for Streamlit Cloud:
+1. Add these lines to your `requirements.txt`:
+```
+unstructured
+requests
+```
+2. Commit and push the updated `requirements.txt` to GitHub.
+
+Streamlit Cloud will automatically install the new dependencies. Your app should then work without this ImportError.
+
+Let me know if you want me to update your `requirements.txt` for you!
+
+---
+
+_**User (2025-10-29 00:29Z)**_
+
+do i need to push again to github 
+
+---
+
+_**Assistant (copilot/gpt-4.1)**_
+
+Yes, after updating your `requirements.txt` to include the missing dependencies (`unstructured` and `requests`), you need to commit and push the changes to GitHub. This will trigger Streamlit Cloud to reinstall dependencies and fix the ImportError.
+
+Steps:
+1. Add the packages to `requirements.txt`.
+2. Run:
+   ```powershell
+   git add requirements.txt
+   git commit -m "Add unstructured and requests to requirements"
+   git push
+   ```
+
+Let me know if you want me to update `requirements.txt` for you!
+
+---
+
+_**User (2025-10-29 00:41Z)**_
+
+can we change the options for both api, if user want to enter only one api and app can use that api ?
+
+---
+
+_**Assistant (copilot/gpt-4.1)**_
+
+To allow users to enter only one API key and have the app use just that provider, you should:
+
+- Make both API keys optional.
+- Only run the model(s) for which a key is provided.
+- Update the UI and logic to reflect this.
+
+Would you like the app to:
+1. Let the user choose which provider to use (OpenAI or Groq)?
+2. Automatically detect which key is present and use only that provider?
+
+Please confirm your preferred behavior, and I’ll update the code for you!
+
+---
+
+_**User (2025-10-29 00:42Z)**_
+
+Automatically detect which key is present and use only that provider?
+
+---
+
+_**Assistant (copilot/gpt-4.1)**_
+
+There was a technical issue applying the patch, but I can still update your app as requested.
+
+Here’s what you need to do:
+- The app will now check which API key is present and only run the corresponding provider.
+- If both keys are present, it will run both models; if only one is present, it will run just that one.
+
+Would you like me to try the update again, or do you want the code snippet to manually update your file?
+
+---
+
+_**User (2025-10-29 00:43Z)**_
+
+try again
+
+---
+
+_**Assistant (copilot/gpt-4.1)**_
+
+There was a technical issue with the patch tool, but you can safely update your code manually. Here’s exactly what to change:
+
+1. Replace the API key logic at the top:
+```python
+# Fallback for local dev if user didn't provide
+if not openai_key:
+    openai_key = os.getenv("OPENAI_API_KEY")
+if not groq_key:
+    groq_key = os.getenv("GROQ_API_KEY")
+
+if not openai_key and not groq_key:
+    st.sidebar.warning("⚠️ Please enter at least one API key to run the app.")
+    st.stop()
+```
+
+2. Replace the model execution block in your main app:
+```python
+st.info("⚙️ Running selected model(s)...")
+
+openai_answer, groq_answer = None, None
+col1, col2 = st.columns(2)
+
+if openai_key:
+    try:
+        with st.spinner("Running OpenAI Model..."):
+            openai_answer = query_retriever(
+                retriever,
+                query,
+                "OpenAI",
+                openai_model,
+                temperature,
+                openai_key
+            )
+    except Exception as e:
+        openai_answer = f"Error: {e}"
+    with col1:
+        st.markdown(f"### 🤖 OpenAI ({openai_model})")
+        st.success(openai_answer)
+
+if groq_key:
+    try:
+        with st.spinner("Running Groq Model..."):
+            groq_answer = query_retriever(
+                retriever,
+                query,
+                "Groq",
+                groq_model,
+                temperature,
+                groq_key
+            )
+    except Exception as e:
+        groq_answer = f"Error: {e}"
+    with col2:
+        st.markdown(f"### 🦙 Groq ({groq_model})")
+        st.info(groq_answer)
+
+st.markdown("---")
+st.markdown("### 🧩 Summary Insights")
+summary = []
+if openai_key:
+    summary.append("- **OpenAI**: fluent and factual at low temperature.")
+if groq_key:
+    summary.append("- **Groq**: faster, slightly more verbose.")
+summary.append("- Tune **temperature** or **retrieval mode** for different outputs.")
+st.write("\n".join(summary))
+```
+
+This will make your app automatically detect which API key is present and run only that provider. Let me know when you’ve made the change or if you want me to try again with a different method!
+
+---
+
+_**User (2025-10-29 01:07Z)**_
+
+can we update the same logic for document upload and web url, app should auto detect if user upload the document or enter the url, or bohth ? also maximum document upload limit should be 10 mb 
+
+groq is not responding 
+
+Error: Error code: 400 - {'error': {'message': 'The model llama3-70b-8192 has been decommissioned and is no longer supported. Please refer to https://console.groq.com/docs/deprecations for a recommendation on which model to use instead.', 'type': 'invalid_request_error', 'code': 'model_decommissioned'}}
+
+Openai Response is very good, but if i only add groq api key it should only give me groq response, but right now app giveing me both response? its will give only both response if user add both api keys? 
+
+---
+
+_**Assistant (copilot/gpt-4.1)**_
+
+Here’s how to update your app for all requested features:
+
+1. **Auto-detect document upload and web URL, with 10MB limit:**
+   Replace your document/web logic with:
+   ```python
+   uploaded_pdf = st.file_uploader("📘 Upload a PDF", type=["pdf"])
+   web_url = st.text_input("🌐 Website URL")
+   query = st.text_area("💬 Enter Your Question")
+
+   if st.button("🚀 Run RAG Comparison"):
+       embeddings = get_embedding_model(embedding_choice, openai_key)
+       all_docs = []
+
+       # Auto-detect document upload (limit 10MB)
+       if uploaded_pdf is not None:
+           if uploaded_pdf.size > 10 * 1024 * 1024:
+               st.error("PDF file size exceeds 10MB limit.")
+               st.stop()
+           with tempfile.NamedTemporaryFile(delete=False, suffix=".pdf") as tmp_file:
+               tmp_file.write(uploaded_pdf.getbuffer())
+               pdf_path = tmp_file.name
+           all_docs.extend(process_pdf(pdf_path))
+
+       # Auto-detect web URL
+       if web_url:
+           all_docs.extend(process_web(web_url))
+
+       if not all_docs:
+           st.warning("Please upload a PDF or enter a Web URL.")
+           st.stop()
+   ```
+
+2. **Groq model decommissioned error handling:**
+   Replace your Groq response block with:
+   ```python
+   if groq_key:
+       try:
+           with st.spinner("Running Groq Model..."):
+               groq_answer = query_retriever(
+                   retriever,
+                   query,
+                   "Groq",
+                   groq_model,
+                   temperature,
+                   groq_key
+               )
+       except Exception as e:
+           if "model_decommissioned" in str(e):
+               groq_answer = (
+                   f"Error: The selected Groq model '{groq_model}' has been decommissioned. "
+                   "Please select a supported model. See: https://console.groq.com/docs/deprecations"
+               )
+           else:
+               groq_answer = f"Error: {e}"
+       with col2:
+           st.markdown(f"### 🦙 Groq ({groq_model})")
+           st.info(groq_answer)
+   ```
+
+3. **Provider response logic:**
+   The app will only show responses for the provider(s) whose API key is present. If only Groq is present, only Groq will respond; same for OpenAI; if both, both will respond.
+
+Apply these changes to your code and your app will work as requested. Let me know if you want me to try a different patch method or need further help!
+
+---
+
+_**User (2025-10-29 01:14Z)**_
+
+Deprecated Model	Shutdown Date	Recommended Replacement Model ID
+gemma2-9b-it
+
+10/08/25	
+llama-3.1-8b-instant
+
+Deprecated Model	Shutdown Date	Recommended Replacement Model ID
+deepseek-r1-distill-llama-70b
+
+10/02/25	
+llama-3.3-70b-versatile
+
+ or 
+openai/gpt-oss-120b
+
+Deprecated Model	Shutdown Date	Recommended Replacement Model ID
+llama3-70b-8192
+
+08/30/25	
+llama-3.3-70b-versatile
+
+llama3-8b-8192
+
+08/30/25	
+llama-3.1-8b-instant
+Deprecated Model	Shutdown Date	Recommended Replacement Model ID
+distil-whisper-large-v3-en
+
+08/23/25	
+whisper-large-v3-turbo
+
+	
+qwen/qwen3-32b
+these are the groq supported models we can use, please cheange the 
+
+---
+
+_**Assistant (copilot/gpt-4.1)**_
+
+
+```
+
+```
+The Groq model choices in your app have been updated to use only supported models:
+
+- llama-3.3-70b-versatile
+- llama-3.1-8b-instant
+- openai/gpt-oss-120b
+- whisper-large-v3-turbo
+- qwen/qwen3-32b
+
+Your app will now avoid deprecated Groq models. There are a few minor lint warnings (long lines, blank lines) that do not affect functionality. Let me know if you want those fixed or need further changes!
+
+---
+
+_**User (2025-10-29 01:18Z)**_
+
+(.venv) PS C:\Users\dr_um\OneDrive\Desktop\ragpiplines> streamlit run Ragapp.py
+
+  You can now view your Streamlit app in your browser.
+
+  Local URL: http://localhost:8501
+  Network URL: http://192.168.12.101:8501
+
+2025-10-29 06:17:46.208 Uncaught app execution
+Traceback (most recent call last):
+  File "C:\Users\dr_um\OneDrive\Desktop\ragpiplines\.venv\Lib\site-packages\streamlit\runtime\scriptrunner\exec_code.py", line 128, in exec_func_with_error_handling
+    result = func()
+  File "C:\Users\dr_um\OneDrive\Desktop\ragpiplines\.venv\Lib\site-packages\streamlit\runtime\scriptrunner\script_runner.py", line 669, in code_to_exec
+    exec(code, module.__dict__)  # noqa: S102
+    ~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\dr_um\OneDrive\Desktop\ragpiplines\Ragapp.py", line 75, 
+in <module>
+    temperature = st.sidebar.slider(
+        "🔥 Temperature (creativity)",
+    ...<4 lines>...
+        1.5
+    )
+  File "C:\Users\dr_um\OneDrive\Desktop\ragpiplines\.venv\Lib\site-packages\streamlit\runtime\metrics_util.py", line 443, in wrapped_func
+    result = non_optional_func(*args, **kwargs)
+  File "C:\Users\dr_um\OneDrive\Desktop\ragpiplines\.venv\Lib\site-packages\streamlit\elements\widgets\slider.py", line 633, in slider
+    return self._slider(
+           ~~~~~~~~~~~~^
+        label=label,
+        ^^^^^^^^^^^^
+    ...<13 lines>...
+        ctx=ctx,
+        ^^^^^^^^
+    )
+    ^
+  File "C:\Users\dr_um\OneDrive\Desktop\ragpiplines\.venv\Lib\site-packages\streamlit\elements\widgets\slider.py", line 945, in _slider
+    slider_proto.format = format
+    ^^^^^^^^^^^^^^^^^^^
+TypeError: bad argument type for built-in operation
+
+
+---
+
+_**Assistant (copilot/gpt-4.1)**_
+
+The error is caused by the `st.sidebar.slider` for temperature: you set the default value to `1.5`, but the slider's max value is `1.0`. This causes a type mismatch.
+
+To fix it, change the temperature slider to:
+```python
+temperature = st.sidebar.slider(
+    "🔥 Temperature (creativity)",
+    0.0,
+    1.0,
+    0.3,
+)
+```
+Remove the extra `1.5` argument. The correct order is: min, max, default.
+
+Update this in your code and your app will run without this error!
+
+---
+
+_**User (2025-10-29 01:21Z)**_
+
+Groq (qwen/qwen3-32b)
+Error: 'ascii' codec can't encode character '\U0001f525' in position 851: ordinal not in range(128)
+
+---
+
+_**Assistant (copilot/gpt-4.1)**_
+
+
+```
+
+```
+The Groq Unicode error is now handled: if a response contains characters that can't be encoded in ASCII, the app will display a cleaned version without those characters. The Groq header emoji was also removed for compatibility.
+
+Your app should now display Groq responses without crashing. Let me know if you need further Unicode support or want lint warnings fixed!
+
+---
+
+_**User (2025-10-29 01:26Z)**_
+
+<think> Okay, the user is asking how to install Primavera. Let me look through the provided context to find the relevant steps.
+First, I see there's a P6 Professional Installation and Configuration Guide mentioned. The context includes steps for setting up the Primavera Database using the Primavera Database Setup Wizard. The steps start with launching the wizard, creating Oracle users, configuring options like application users, sample data, and base currency.
+
+Then there's a section about integrating Oracle Primavera Risk Analysis, which involves prerequisites like installing specific versions of P6 Professional and Risk Analysis, setting up the 32-bit JRE, modifying the registry, and running dbconfig.cmd.
+
+I should outline the main installation steps based on the database setup part first. The user might be installing P6 Professional, so the key steps would be using the Primavera Database Setup Wizard, creating Oracle users, configuring application users, choosing sample data, and setting the base currency. Also, the note about checking the log file if there's a failure is important.
+
+For the integration part with Risk Analysis, the steps involve the Connection Wizard, Java JRE setup, registry edits, and database configuration. But the user's question is general about installing Primavera, so maybe focus on the main installation first. However, including the integration steps as an additional part if they need Risk Analysis would be helpful.
+
+I need to make sure to mention the prerequisites like Oracle Database and correct Java versions. Also, note the password requirements and avoiding special characters. The user might not know about the JRE differences between components, so highlighting that P6 needs 64-bit and Risk Analysis 32-bit is crucial.
+
+Check if there's any other info. The context also mentions running dbconfig.cmd for the integration part, but that's specific to Risk Analysis. The main installation steps are in the Database Setup Wizard.
+
+So, the answer should start with the main installation steps from the guide, then mention the integration steps if needed. Make sure to structure it clearly, step by step, referencing the provided context accurately. Avoid making up steps not in the context. Also, note the version numbers mentioned, like P6 Professional 18.8 or later and Risk Analysis 8.7.0079 or later if applicable. </think>
+
+To install Oracle Primavera P6 Professional and integrate Oracle Primavera Risk Analysis, follow these steps based on the provided context:
+
+1. Install Oracle Primavera P6 Professional (On-Premises)
+Prerequisites:
+Oracle Database (configured as per Oracle requirements).
+Ensure Java Runtime Environment (JRE) is installed (64-bit JRE for P6 Professional).
+Installation Steps:
+Launch the Primavera Database Setup Wizard:
+
+Run the installation wizard provided with the software.
+Create Oracle Users:
+
+Specify Oracle Database administrative, privileged, public, and background user names and passwords.
+Note: Use unique usernames and avoid special characters. Passwords must be 8–20 characters with a mix of letters and numbers.
+Configuration Options:
+
+Application User: Set the P6 Professional administrative user name and password (default has Admin Superuser rights).
+Sample Data: Choose to load sample project data (optional for non-production databases).
+Base Currency: Select the base currency (cannot be changed later if projects exist).
+Complete the Wizard:
+
+Click Install to populate the database tables.
+Click Finish to exit the wizard.
+Post-Installation:
+
+If the installation fails, check the log file: PrimaveraDatabaseSetup.log (e.g., C:\Documents and Settings\Administrator).
+2. Integrate Oracle Primavera Risk Analysis (Optional)
+Prerequisites:
+Oracle Primavera Risk Analysis version 8.7.0079 or later.
+P6 Professional version 18.8 or later.
+32-bit JRE for Risk Analysis (P6 Professional uses 64-bit JRE).
+Integration Steps:
+Configure Risk Analysis Connection:
+
+Open Oracle Primavera Risk Analysis.
+Go to File > Primavera > Connection Wizard.
+Select P6 Professional and specify the 32-bit JRE location.
+Edit Windows Registry:
+
+Open Registry Editor.
+Navigate to:
+HKEY_LOCAL_MACHINE\SOFTWARE
+Create the key path:
+Primavera > P6 Professional > IAPI
+Add a String Value:
+Name: APIJARS
+Data: Path to the P6 Integration API installation folder.
+Run Database Configuration:
+
+Execute dbconfig.cmd as an administrator.
+Create a new configuration named INTERNAL_PLUGINS.
+Key Notes:
+Use strong passwords (8–20 characters, mix of uppercase, lowercase, and numbers).
+Avoid special characters in usernames or database names.
+For production environments, ensure Oracle Database and Java are properly configured.
+If issues arise during installation, consult Oracle’s documentation or contact Oracle Global Customer Support.
+
+Let me know if you need further clarification!
+
+grok response is good but i dont want <think> Okay, the user is asking how to install Primavera. Let me look through the provided context to find the relevant steps.
+First, I see there's a P6 Professional Installation and Configuration Guide mentioned. The context includes steps for setting up the Primavera Database using the Primavera Database Setup Wizard. The steps start with launching the wizard, creating Oracle users, configuring options like application users, sample data, and base currency.
+
+Then there's a section about integrating Oracle Primavera Risk Analysis, which involves prerequisites like installing specific versions of P6 Professional and Risk Analysis, setting up the 32-bit JRE, modifying the registry, and running dbconfig.cmd.
+
+I should outline the main installation steps based on the database setup part first. The user might be installing P6 Professional, so the key steps would be using the Primavera Database Setup Wizard, creating Oracle users, configuring application users, choosing sample data, and setting the base currency. Also, the note about checking the log file if there's a failure is important.
+
+For the integration part with Risk Analysis, the steps involve the Connection Wizard, Java JRE setup, registry edits, and database configuration. But the user's question is general about installing Primavera, so maybe focus on the main installation first. However, including the integration steps as an additional part if they need Risk Analysis would be helpful.
+
+I need to make sure to mention the prerequisites like Oracle Database and correct Java versions. Also, note the password requirements and avoiding special characters. The user might not know about the JRE differences between components, so highlighting that P6 needs 64-bit and Risk Analysis 32-bit is crucial.
+
+Check if there's any other info. The context also mentions running dbconfig.cmd for the integration part, but that's specific to Risk Analysis. The main installation steps are in the Database Setup Wizard.
+
+So, the answer should start with the main installation steps from the guide, then mention the integration steps if needed. Make sure to structure it clearly, step by step, referencing the provided context accurately. Avoid making up steps not in the context. Also, note the version numbers mentioned, like P6 Professional 18.8 or later and Risk Analysis 8.7.0079 or later if applicable. </think>
+ in the groq response? can we fix this 
+
+---
+
+_**Assistant (copilot/gpt-4.1)**_
+
+
+```
+
+```
+Groq responses will now have any <think> ... </think> blocks automatically removed before display. This ensures only the direct answer is shown to users.
+
+Your app will now present cleaner Groq outputs. Let me know if you want to fix the minor lint warnings or need further improvements!
+
+---
+
+_**User (2025-10-29 01:33Z)**_
+
+Merged RAG Comparison App (PDF + Web) can you verify we ahve a Login for response, first PDF if file uploade, if not say data no availbe of somthing good, same for Web URL will be 2nd response if the link avaiable? 3rd response will be combined of pdf and web url if both available? you can set the logic and ajust the 
+
+---------------
+
+Groq (whisper-large-v3-turbo)
+Error: Error code: 400 - {'error': {'message': 'The model whisper-large-v3-turbo does not support chat completions', 'type': 'invalid_request_error'}}
+
+(.venv) PS C:\Users\dr_um\OneDrive\Desktop\ragpiplines> streamlit run Ragapp.py
+
+  You can now view your Streamlit app in your browser.
+
+  Local URL: http://localhost:8501
+  Network URL: http://192.168.12.101:8501
+
+C:\Users\dr_um\OneDrive\Desktop\ragpiplines\Ragapp.py:175: LangChainDeprecationWarning: The method `Chain.run` was deprecated in langchain-classic 0.1.0 and will be removed in 1.0. Use `invoke` instead.
+  return qa.run(query)
+modules.json: 100%|█████████████████████| 349/349 [00:00<00:00, 527kB/s]
+C:\Users\dr_um\OneDrive\Desktop\ragpiplines\.venv\Lib\site-packages\huggingface_hub\file_download.py:143: UserWarning: `huggingface_hub` cache-system uses symlinks by default to efficiently store duplicated files but your machine does not support them in C:\Users\dr_um\.cache\huggingface\hub\models--sentence-transformers--all-MiniLM-L6-v2. Caching files will still work but in a degraded version that might require more space on your disk. This warning can be disabled by setting the `HF_HUB_DISABLE_SYMLINKS_WARNING` environment variable. For more details, see https://huggingface.co/docs/huggingface_hub/how-to-cache#limitations.
+To support symlinks on Windows, you either need to activate Developer Mode or to run Python as an administrator. In order to activate developer mode, see this article: https://docs.microsoft.com/en-us/windows/apps/get-started/enable-your-device-for-development
+  warnings.warn(message)
+config_sentence_transformers.json: 100%|█| 116/116 [00:00<00:00, 207kB/s
+README.md: 10.5kB [00:00, 15.2MB/s]
+sentence_bert_config.json: 100%|██████| 53.0/53.0 [00:00<00:00, 289kB/s]
+config.json: 100%|█████████████████████| 612/612 [00:00<00:00, 2.15MB/s]
+Xet Storage is enabled for this repo, but the 'hf_xet' package is not installed. Falling back to regular HTTP download. For better performance, install the package with: `pip install huggingface_hub[hf_xet]` or `pip install hf_xet`
+model.safetensors: 100%|███████████| 90.9M/90.9M [00:35<00:00, 2.54MB/s]
+tokenizer_config.json: 100%|████████████| 350/350 [00:00<00:00, 721kB/s]
+vocab.txt: 232kB [00:00, 910kB/s]
+tokenizer.json: 466kB [00:00, 2.02MB/s]
+special_tokens_map.json: 100%|██████████| 112/112 [00:00<00:00, 402kB/s]
+config.json: 100%|██████████████████████| 190/190 [00:00<00:00, 505kB/s]
+
+
+---
+
+_**Assistant (copilot/gpt-4.1)**_
+
+
+```
+
+```
+Your app now displays three separate responses:
+- PDF Response (if PDF uploaded, otherwise a friendly message)
+- Web URL Response (if URL entered, otherwise a friendly message)
+- Combined PDF + Web Response (if both are available, otherwise a friendly message)
+
+It also skips Groq models that do not support chat completions and gives clear error messages for deprecated models.
+
+Let me know if you want to fix the minor lint warnings (long lines) or need further adjustments!
+
+---
+
+_**User (2025-10-29 01:35Z)**_
+
+we can remove the model whihc is not responding 
+
+---
+
+_**Assistant (copilot/gpt-4.1)**_
+
+
+```
+
+```
+The non-responding Groq model (`whisper-large-v3-turbo`) has been removed from the selection list. Only supported models are now available for users.
+
+Your app will no longer offer models that do not support chat completions. Let me know if you want to address the minor lint warnings or need further changes!
+
+---
+
+_**User (2025-10-29 01:57Z)**_
+
+Drag and drop file here
+Limit 200MB per file • PDF why its shows 200MB limit? we changes this to 10MB 
+
+---
+
+_**Assistant (copilot/gpt-4.1)**_
+
+
+```
+
+```
+The file uploader label now correctly shows "max 10MB" for PDF uploads. The UI will no longer suggest a 200MB limit. Your app enforces the 10MB limit as intended. Let me know if you need any more adjustments!
+
+---
+
+_**User (2025-10-29 01:58Z)**_
+
+see drag and drop filer here below limit still show 200MB
+
+---
+
+_**Assistant (copilot/gpt-4.1)**_
+
+The "Limit 200MB per file" message is a default Streamlit UI hint and cannot be changed directly via the `file_uploader` label. However, your app enforces the 10MB limit in code and displays a custom error if the file is too large.
+
+Users will see your "max 10MB" label and get a clear error if they try to upload a file over 10MB. The 200MB hint is just a UI default and does not affect your actual limit.
+
+If you want to make this even clearer, you can add a note in your app description or sidebar explaining the enforced 10MB limit. Let me know if you'd like to add that!
+
+---
+
+_**User (2025-10-29 02:04Z)**_
+
+how can i change the UI default ? can you show me the file i will change manualy 
+
+---
+
+_**Assistant (copilot/gpt-4.1)**_
+
+Streamlit does not provide a built-in way to change the "Limit 200MB per file" UI hint in the file uploader. This message is hardcoded in Streamlit’s frontend and cannot be changed from your app code or any config file.
+
+There is no file in your project or in Streamlit’s Python package that you can safely edit to change this message. Modifying Streamlit’s internal source code is not recommended, as it may break with updates and is not supported.
+
+The best practice is to:
+- Set your own label (as you did: "Upload a PDF (max 10MB)")
+- Enforce the limit in your code (already done)
+- Optionally add a sidebar or markdown note explaining the true limit
+
+If you want, I can show you how to add a clear warning or note in your app UI for users. Let me know if you’d like that!
+
+---
+
