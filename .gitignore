@@ -1,0 +1,49 @@
+# Ignore Python cache and environment files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Ignore virtual environment folders
+venv/
+env/
+
+# Ignore environment variable files
+.env
+.env.*
+
+# Ignore Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# Ignore OS files
+.DS_Store
+Thumbs.db
+
+# Ignore logs
+*.log
+
+# Ignore Streamlit secrets
+.streamlit/secrets.toml
+
+# Ignore database files
+*.sqlite3
+*.db
+
+# Ignore VS Code settings
+.vscode/
+
+# Ignore test coverage reports
+htmlcov/
+.coverage
+
+# Ignore build artifacts
+dist/
+build/
+*.egg-info/
+
+# Ignore requirements lock files
+poetry.lock
+Pipfile.lock
+
+# Ignore node modules (if any)
+node_modules/
