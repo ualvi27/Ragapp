@@ -12,8 +12,8 @@ transformers
 torch
 accelerate
 streamlit
+langchain-huggingface
 
 # Required for document loaders
 unstructured
 pdfminer.six
-requests
