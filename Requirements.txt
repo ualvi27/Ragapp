@@ -13,7 +13,7 @@ transformers
 torch
 accelerate
 streamlit
-
+langchain_groq
 
 # Required for document loaders
 unstructured
