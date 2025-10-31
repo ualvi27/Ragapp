@@ -1,0 +1,29 @@
+# core
+streamlit
+python-dotenv
+requests
+
+# langchain + provider modules (use versions you tested)
+langchain==1.0.2
+langchain_core
+langchain_classic
+langchain_community
+langchain_openai
+langchain_groq
+langchain_huggingface
+langchain_text_splitters
+
+# embeddings / transformers (optional)
+sentence-transformers
+transformers
+torch
+accelerate
+
+# postgres & pgvector
+psycopg2-binary
+pgvector
+
+# PDF & web loaders
+pypdf
+unstructured
+pdfminer.six
